@@ -6,8 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/liaomars/mini-blog/internal/pkg/core"
-	"github.com/liaomars/mini-blog/internal/pkg/errno"
 	"github.com/liaomars/mini-blog/internal/pkg/log"
 	mw "github.com/liaomars/mini-blog/internal/pkg/middleware"
 	"github.com/spf13/cobra"
@@ -64,7 +62,12 @@ Find more miniblog information at:
 }
 
 func run() error {
-	fmt.Println("Hello MiniBlog!!!")
+	//fmt.Println("Hello MiniBlog!!!")
+
+	// 初始化数据库链接
+	if err := initStore(); err != nil {
+		return err
+	}
 
 	setting, _ := json.Marshal(viper.AllSettings())
 	log.Infow(string(setting))
@@ -80,17 +83,6 @@ func run() error {
 	mws := []gin.HandlerFunc{gin.Recovery(), mw.Cors, mw.NoCache, mw.Secure, mw.RequestID()}
 
 	g.Use(mws...)
-
-	// 注册404 处理handler
-	g.NoRoute(func(c *gin.Context) {
-		core.WriteResponse(c, errno.ErrPageNotFound, nil)
-	})
-
-	// 注册一个心跳检查访问路由
-	g.GET("/healthz", func(c *gin.Context) {
-		log.C(c).Infow("Healthz function called")
-		core.WriteResponse(c, nil, map[string]string{"status": "ok"})
-	})
 
 	// 创建http server服务实例
 	httpSrv := &http.Server{Addr: viper.GetString("addr"), Handler: g}
