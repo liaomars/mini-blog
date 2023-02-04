@@ -1,6 +1,10 @@
 package model
 
-import "time"
+import (
+	"github.com/liaomars/mini-blog/pkg/auth"
+	"gorm.io/gorm"
+	"time"
+)
 
 type UserM struct {
 	ID        int64     `gorm:"column:id;primary_key"`
@@ -15,4 +19,12 @@ type UserM struct {
 
 func (u *UserM) TableName() string {
 	return "user"
+}
+
+func (u *UserM) BeforeCreate(tx *gorm.DB) (err error) {
+	u.Password, err = auth.Encrypt(u.Password)
+	if err != nil {
+		return err
+	}
+	return nil
 }

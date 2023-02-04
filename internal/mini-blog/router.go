@@ -9,7 +9,7 @@ import (
 	"github.com/liaomars/mini-blog/internal/pkg/log"
 )
 
-func InstallRouter(g *gin.Engine) error {
+func installRouter(g *gin.Engine) error {
 	// 注册404 处理handler
 	g.NoRoute(func(c *gin.Context) {
 		core.WriteResponse(c, errno.ErrPageNotFound, nil)

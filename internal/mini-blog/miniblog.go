@@ -6,8 +6,10 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/liaomars/mini-blog/internal/pkg/know"
 	"github.com/liaomars/mini-blog/internal/pkg/log"
 	mw "github.com/liaomars/mini-blog/internal/pkg/middleware"
+	"github.com/liaomars/mini-blog/pkg/token"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"net/http"
@@ -64,6 +66,9 @@ Find more miniblog information at:
 func run() error {
 	//fmt.Println("Hello MiniBlog!!!")
 
+	// 初始化jwt
+	token.Init(viper.GetString("jwt-secret"), know.XUsernameKey)
+
 	// 初始化数据库链接
 	if err := initStore(); err != nil {
 		return err
@@ -83,6 +88,11 @@ func run() error {
 	mws := []gin.HandlerFunc{gin.Recovery(), mw.Cors, mw.NoCache, mw.Secure, mw.RequestID()}
 
 	g.Use(mws...)
+
+	// 加载路由
+	if err := installRouter(g); err != nil {
+		return err
+	}
 
 	// 创建http server服务实例
 	httpSrv := &http.Server{Addr: viper.GetString("addr"), Handler: g}

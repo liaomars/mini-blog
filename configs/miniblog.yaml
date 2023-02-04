@@ -1,6 +1,7 @@
 #通用配置
 runmode: debug #gin框架运行模式 Gin 开发模式, 可选值有：debug, release, test
 addr: :8080 # http运行端口
+jwt-secret: Rtg8BPKNEf2mB4mgvKONGPZZQSaJWNLijxR42qRgq0iBb5 # JWT 签发密钥
 # mysql数据库相关配置
 db:
   host: gz-cdb-pz8m4pfv.sql.tencentcdb.com:60380
