@@ -13,6 +13,7 @@ var (
 
 // IStore 定义一个接口，让其它对象实现接口的规范
 type IStore interface {
+	DB() *gorm.DB
 	Users() UserStore
 }
 
@@ -29,6 +30,10 @@ func NewStore(db *gorm.DB) *datastore {
 		S = &datastore{db: db}
 	})
 	return S
+}
+
+func (ds *datastore) DB() *gorm.DB {
+	return ds.db
 }
 
 // Users 这个返回UserStore类型的理解是：user模块里的 user类型实现了,

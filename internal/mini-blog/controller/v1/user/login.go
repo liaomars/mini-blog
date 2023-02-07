@@ -9,12 +9,10 @@ import (
 	v1 "github.com/liaomars/mini-blog/pkg/api/miniblog/v1"
 )
 
-const defaultMethods = "(GET)|(POST)|(PUT)|(DELETE)"
+func (ctrl *UserController) Login(c *gin.Context) {
+	log.C(c).Infow("login function called")
 
-func (ctrl *UserController) Create(c *gin.Context) {
-	log.C(c).Infow("Create user function called")
-
-	var r v1.CreateUserRequest
+	var r v1.LoginRequest
 
 	if err := c.ShouldBindJSON(&r); err != nil {
 		core.WriteResponse(c, errno.ErrBind, nil)
@@ -26,16 +24,15 @@ func (ctrl *UserController) Create(c *gin.Context) {
 		return
 	}
 
-	if err := ctrl.b.Users().Create(c, &r); err != nil {
+	//if err := ctrl.b.Users().Login(c, &r); err != nil {
+	//	core.WriteResponse(c, err, nil)
+	//	return
+	//}
+	loginResponse, err := ctrl.b.Users().Login(c, &r)
+	if err != nil {
 		core.WriteResponse(c, err, nil)
 		return
 	}
 
-	// 添加授权策略
-	if _, err := ctrl.a.AddNamedPolicy("p", r.Username, "/v1/users/"+r.Username, defaultMethods); err != nil {
-		core.WriteResponse(c, err, nil)
-		return
-	}
-
-	core.WriteResponse(c, nil, nil)
+	core.WriteResponse(c, nil, loginResponse)
 }

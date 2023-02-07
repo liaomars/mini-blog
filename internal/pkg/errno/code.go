@@ -10,9 +10,6 @@ var (
 	// ErrPageNotFound 表示路由找不到
 	ErrPageNotFound = &Errno{HTTP: 404, Code: "ResourceNotFound.PageNotFound", Message: "Page not found."}
 
-	// ErrUserAlreadyExist 表示用户已经存在
-	ErrUserAlreadyExist = &Errno{HTTP: 200, Code: "User.userExist", Message: "user is exist."}
-
 	// ErrBind 表示参数绑定错误.
 	ErrBind = &Errno{HTTP: 400, Code: "InvalidParameter.BindError", Message: "Error occurred while binding the request body to the struct."}
 
@@ -24,4 +21,7 @@ var (
 
 	// ErrTokenInvalid 表示 JWT Token 格式错误.
 	ErrTokenInvalid = &Errno{HTTP: 401, Code: "AuthFailure.TokenInvalid", Message: "Token was invalid."}
+
+	// ErrUnauthorized 表示请求没有被授权.
+	ErrUnauthorized = &Errno{HTTP: 401, Code: "AuthFailure.Unauthorized", Message: "Unauthorized."}
 )
