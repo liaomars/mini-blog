@@ -29,7 +29,7 @@ func installRouter(g *gin.Engine) error {
 		return nil
 	}
 
-	uc := user.New(store.S)
+	uc := user.New(store.S, authz)
 	// 登录
 	g.POST("/login", uc.Login)
 	v1 := g.Group("/v1")

@@ -6,6 +6,9 @@ import (
 	"os"
 )
 
+var a int = 1
+var p *int = &a
+
 func main() {
 	command := miniblog.NewMiniBlogCommand()
 	if err := command.Execute(); err != nil {

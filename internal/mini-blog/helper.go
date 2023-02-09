@@ -76,6 +76,7 @@ func logOptions() *log.Options {
 	}
 }
 
+// initStore 初始化数据库连接
 func initStore() error {
 	dbOptions := &db.MysqlOptions{
 		Host:                  viper.GetString("db.host"),

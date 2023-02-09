@@ -36,6 +36,7 @@ Find more miniblog information at:
 		// 命令出错时，不打印帮助信息。不需要打印帮助信息，设置为 true 可以保持命令出错时一眼就能看到错误信息
 		SilenceUsage: true,
 		// 指定调用 cmd.Execute() 时，执行的 Run 函数，函数执行失败会返回错误信息
+		// RunE这个是指启动且会返回错误信息，还有Run这个，一般文档会用这个
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// 初始化日志
 			log.Init(logOptions())
